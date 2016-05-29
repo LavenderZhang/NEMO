@@ -358,3 +358,5 @@ RegisterPatch(225, "ShowRegisterButton", "Show Register Button", "Custom", 0, "N
 RegisterPatch(226, "DisableWalkToDelay", "Disable Walk To Delay", "Fix", 16, "MegaByte", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
 
 RegisterPatch(227, "SetWalkToDelay", "Change Walk To Delay", "Fix", 16, "MegaByte", "Can have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
+
+RegisterPatch(228, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "Neo", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
