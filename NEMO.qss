@@ -1,0 +1,261 @@
+/* Default Style for all widgets */
+QWidget {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 white, stop:0.5 #C6C6C6, stop:1 white);
+    color: #581E70;
+    font: bold;
+    font-family: Tahoma;
+    font-size: 11px;
+}
+
+/* Button Styles */
+QPushButton {
+    background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4, radius: 1.35, stop: 0 rgb(0, 70, 130), stop: 1 rgb(0, 150, 210));
+    color: #F0F0F0;
+    border: 1px solid #386868;
+    border-radius: 10px;
+    padding: 1px;
+    min-width: 60px;
+    min-height: 20px;
+}
+
+QToolButton {
+	background: transparent
+}
+
+QPushButton:disabled {
+	background-color: grey;
+    border: 1px solid #686868;
+}
+
+QPushButton:hover , QToolButton:hover {
+    background-color: qradialgradient(cx: 0.3, cy: -0.4, fx: 0.3, fy: -0.4, radius: 1.35, stop: 0 rgb(20, 100, 160), stop: 1 rgb(30, 180, 240));
+}
+
+QToolButton:hover:enabled {
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 3px;
+}
+
+QPushButton:pressed, QToolButton:pressed  {
+    background-color: qradialgradient(cx: 0.4, cy: -0.1, fx: 0.4, fy: -0.1, radius: 1.35, stop: 1 rgb(0, 60, 125), stop: 0 rgb(5, 155, 215));
+    padding: 2px 0px 0px 2px;
+}
+
+/* Text Box Style */
+QLineEdit {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #8080A0, stop: 0.2 white, stop: 0.9 white, stop: 1 #8080A0);
+    color: #0A0A78;
+    border: 1px solid #0A0A80;
+    border-radius: 8px;
+    padding: 1px;
+    min-height: 20px;
+}
+
+QLineEdit:disabled {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #8080A0, stop: 0.2 #D0D0F0, stop: 0.9 #D0D0F0, stop: 1 #8080A0);
+}
+
+/* Patch Table & Other View Styles */
+/*QColumnView, QTextBrowser, QTextEdit,*/
+QListWidget, QTableWidget, QListView, QTableView {
+    background-color: white;
+    color: #0A0A78;
+    border: 1px solid #0A0A80;
+    border-radius: 5px;
+    padding: 2px;
+    min-height: 20px;
+}
+
+QHeaderView::section {
+    background-color: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 #BABABA, stop: 1 #EEEEEE);
+    border: 1px solid #A0A0A0;
+    padding: 1px;
+    padding-left: 2px;
+}
+
+/* Button Bar Style */
+QToolBar {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E6E6FA, stop: 0.2 #C8C8DC, stop: 1 #E6E6FA);
+}
+
+/* Horizontal Scrollbar Style */
+QScrollBar:horizontal {
+    background-color: #C8C8C8;
+    border: 1px solid #646464;
+    height: 20px;
+    margin: 0 19px 0 19px;
+}
+
+QScrollBar::handle:horizontal  {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 rgb(245, 245, 245), stop: 0.4 rgb(163, 175, 183), stop: 1 white);
+    border: 1px solid #646464;
+    min-width: 20px;
+    margin: 0px;
+}
+
+
+QScrollBar::add-line:horizontal {
+    border: 1px solid #646464;
+    width: 18px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+	border: 1px solid #646464;
+	width: 18px;
+	subcontrol-position: left;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::left-arrow:horizontal {
+    background-image: url(Style/arrowleft.png);
+}
+
+QScrollBar:left-arrow:horizontal:pressed {
+	background-image: url(Style/arrowleftpress.png);
+}
+
+QScrollBar::right-arrow:horizontal {
+	background-image: url(Style/arrowright.png);
+}
+
+QScrollBar::right-arrow:horizontal:pressed {
+	background-image: url(Style/arrowrightpress.png);
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+	background: none;
+}
+
+/* Vertical Scrollbar Style */
+QScrollBar:vertical {
+    background-color: #C8C8C8;
+    border: 1px solid #646464;
+    width: 20px;
+    margin: 19px 0 19px 0;
+}
+
+QScrollBar::handle:vertical {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 rgb(245, 245, 245), stop: 0.4 rgb(163, 175, 183), stop: 1 white);
+    border: 1px solid #646464;
+    min-height: 20px;
+    margin: 0px;
+}
+
+QScrollBar::add-line:vertical {
+    border: 1px solid #646464;
+    height: 18px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+	border: 1px solid #646464;
+	height: 18px;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical {
+    background-image: url(Style/arrowup.png);
+}
+
+QScrollBar:up-arrow:vertical:pressed {
+	background-image: url(Style/arrowuppress.png);
+}
+
+QScrollBar::down-arrow:vertical {
+	background-image: url(Style/arrowdown.png);
+}
+
+QScrollBar::down-arrow:vertical:pressed {
+	background-image: url(Style/arrowdownpress.png);
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+	background: none;
+}
+
+/* Menu Style */
+QMenuBar, QMenu  {
+	background-color: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 #BABABA, stop: 1 #EEEEEE);
+    border: 1px solid #A0A0A0;
+}
+
+QMenuBar::item , QMenu::item {
+    background-color: transparent;
+}
+
+QMenuBar::item:selected, QMenu::item:selected  {
+    background: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 #7A9ABA, stop: 1 #AECEEE);
+}
+
+QMenuBar::item:pressed , QMenu::item:pressed  {
+    background: qlineargradient(x1: 0, y1: 1, x2: 0, y2: 0, stop: 0 #6A8AAA, stop: 1 #9EBEDE);
+}
+
+/* Filter Input Special */
+QLineEdit#filterInput {/* Text Box */
+    border-radius: 0px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top: 1px solid #0A0A80;
+    border-left: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-right: 0px;
+}
+
+QPushButton#filterClear {/* X Button */
+    border-radius: 0px;
+    border-top-right-radius:8px;
+    border-bottom-right-radius:8px;
+    border-top: 1px solid #0A0A80;
+    border-bottom: 1px solid #0A0A80;
+    border-right: 1px solid #0A0A80;
+    border-left: 0px;
+    min-width: 16px;
+    font-family: System;
+}
+
+/* Status Label Special */
+QLabel#statusLabel {
+    font-family: Verdana;
+    font-size: 12px;
+    color: red;
+}
+
+/* Input Dialog Special - Needed since font override is there */
+QLineEdit#regularSample, QLabel#regularLabel {
+    font: regular;
+}
+
+QLineEdit#italicSample, QLabel#italicLabel {
+    font: italic;
+}
+
+QLineEdit#biSample, QLabel#biLabel {
+    font: bold italic;
+}
+
+/* Others */
+QSpinBox {
+    background-color: white;
+}
+
+QLabel, QCheckBox {
+    background-color: transparent;
+}
+
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+QCheckBox::indicator:unchecked {
+    image: url(Style/unchecked.png);
+}
+
+QCheckBox::indicator:checked {
+    image: url(Style/checked.png);
+}

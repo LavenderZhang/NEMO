@@ -1,0 +1,139 @@
+//  1 Use Tilde for Matk
+  2 Chat Flood Allow
+//  3 Chat Flood Remove Limit
+//  4 Use Custom Aura Limits
+//  5 Enable Proxy Support
+//  6 Force Send Client Hash Packet
+  8 Custom Window Title
+//  9 Disable 1rag1 type parameters
+// 10 Disable 4 Letter Character Name Limit
+// 11 Disable 4 Letter User Name Limit
+// 12 Disable 4 Letter Password Limit
+// 13 Disable Ragexe Filename Check
+// 14 Disable Hallucination Wavy Screen
+// 15 Disable HShield
+// 16 Disable Swear Filter
+// 17 Enable Official Custom Fonts
+// 18 Skip Service Selection Screen
+// 19 Enable Title Bar Menu
+// 20 Extend Chat Box
+// 21 Extend Chat Room Box
+// 22 Extend PM Box
+// 23 Enable /who command
+// 24 Fix Camera Angles
+// 25 Fix Camera Angles (LESS)
+// 26 Fix Camera Angles (FULL)
+// 27 HKLM To HKCU
+// 28 Increase Headgear ViewID
+// 29 Disable Game Guard
+// 30 Increase Zoom Out 50%
+// 31 Increase Zoom Out 75%
+// 32 Increase Zoom Out Max
+// 33 Always Call SelectKoreaClientInfo()
+// 34 Enable /showname
+// 35 Read Data Folder First
+// 36 Read msgstringtable.txt
+// 37 Read questid2display.txt
+// 38 Remove Gravity Ads
+// 39 Remove Gravity Logo
+// 40 Restore Login Window
+// 41 Disable Nagle Algorithm
+// 42 Skip Resurrection Button
+// 43 Always Use Email for Char Deletion
+// 44 Translate Client
+// 45 Use Custom Aura Sprites
+// 46 Use Normal Guild Brackets
+// 47 Use Ragnarok Icon
+// 48 Use Plain Text Descriptions
+// 49 Enable Multiple GRFs
+// 50 Skip License Screen
+// 51 Always Show License Screen
+ 52 Use Custom Font
+// 53 Use Ascii on All LangTypes
+// 54 Chat Color - GM
+// 55 Chat Color - Other Player
+ 57 Chat Color - Guild
+// 58 Chat Color - Other Party
+// 59 Chat Color - Your Party
+// 60 Chat Color - Self
+// 61 Disable Packet Encryption
+// 62 Disable Login Encryption
+// 63 Use Official Cloth Palettes
+// 64 @ Bug Fix
+ 65 Load Custom lua file instead of iteminfo*.lub
+// 66 Load iteminfo with char server
+// 67 Disable Quake skill effect
+// 68 Enable 64k Hairstyle
+// 69 Extend Npc Dialog Box
+// 70 Use Custom Exp Bar Limits
+// 71 Ignore Resource Errors
+// 72 Ignore Missing Palette Error
+// 73 Remove Hourly Announce
+// 74 Increase Screenshot Quality
+// 75 Enable Flag Emoticons
+// 76 Enforce Official Login Background
+// 77 Enable Custom 3D Bones
+// 78 Move Cash Shop Icon
+// 79 Shared Body Palettes Type2
+// 80 Shared Body Palettes Type1
+// 81 Rename License File
+// 82 Shared Head Palettes Type1
+// 83 Shared Head Palettes Type2
+// 84 Remove Serial Display
+// 85 Show Cancel To Service Select
+// 86 Only First Login Background
+// 87 Only Second Login Background
+// 88 Allow space in guild name
+// 90 Enable DNS Support
+// 91 Disconnect to Login Window
+ 92 Packet First Key Encryption
+// 93 Packet Second Key Encryption
+// 94 Packet Third Key Encryption
+// 95 Use SSO Login Packet
+// 96 Remove GM Sprites
+// 97 Cancel to Login Window
+// 98 Disable dc_scream.txt
+// 99 Disable ba_frostjoke.txt
+//100 Disable Multiple Windows
+//101 Skip Friend list Cheat Check
+//102 Skip Guild Member Cheat Check
+//103 Disable Auto follow
+//104 Increase Hair Style & Color Limits
+//105 Hide Nav Button
+//106 Hide BG Button
+//107 Hide Bank Button
+//108 Hide Booking Button
+//109 Hide Rodex Button
+//110 Hide Achievements Button
+//111 Hide Rec Button
+//112 Hide Map Button
+//113 Hide Quest Button
+//114 Change Vending Limit [Experimental]
+//115 Enable Effect for all Maps [Experimental]
+//200 Enable Multiple GRFs - Embedded
+//201 Enable Custom Homunculus
+//202 Enable Custom Jobs
+//203 Enable Custom Shields
+//204 Increase Attack Display
+//205 Enable Monster Tables
+//206 Load Custom Quest Lua/Lub files
+207 Resize Font
+//208 Restore Cash Shop Icon
+//209 Enable Mail Box for All LangTypes
+210 Use Custom Icon
+//211 Use Custom DLL
+//212 Restore Roulette
+//213 Disable Help Message on Login
+//214 Restore Model Culling
+//215 Increase Map Quality
+//216 Hide Cash Shop
+//217 Hide Roulette
+//218 Show Exp Numbers
+//219 Always Show Resurrection Button
+//220 Disable Map Interface
+//221 Remove Jobs from Booking
+//222 Show Replay Button
+//223 Move Item Count Upwards [Experimental]
+//225 Show Register Button
+//226 Disable Walk To Delay
+//227 Change Walk To Delay

@@ -1,0 +1,60 @@
+﻿########################################################################
+# To use a variable simply remove the '//' before it and set the value.#
+# For I_COLOR the value has 6 Hex characters, similarly                #
+# I_HEX has 8 Hex characters. Don't remove the $ signs.                #
+########################################################################
+
+########  Packet Keys  ########
+//$firstkey, I_HEX, 56FEEDED
+//$secondkey, I_HEX, 98BEEFED
+//$thirdkey, I_HEX, 4BADBEEF
+
+########  ItemInfo change  ########
+//$newItemInfo, I_STRING, System/iteminfo.lua
+
+########  Chat Colors  ########
+//$guildChatColor, I_COLOR, FEEDED
+//$gmChatColor, I_COLOR, DEAFED
+//$yourChatColor, I_COLOR, FADBED
+//$otherChatColor, I_COLOR, BFADED
+//$yourPartyChatColor, I_COLOR, BEEFED
+//$otherPartyChatColor, I_COLOR, 909009
+
+########  Chat Limit  ########
+//$allowChatFlood, I_INT8, 10
+
+########  Window Title  ########
+//$customWindowTitle, I_STRING, Specify New Title Here
+
+########  Enable Flag Emoticon  ########
+//$inpFlag, I_FILE, /path/to/flag/list/file
+
+########  Enable Multiple GRF v1  ########
+//$dataINI, I_STRING, DATA.INI
+
+########  Enable Multiple GRF v2  ########
+//$inpMultGRF, I_FILE, /path/to/INI/file
+
+########  Extended NPC Box  ########
+//$npcBoxLength, I_INT32, 3000
+
+########  Screenshot Quality  ########
+//$uQuality, I_INT8, 75
+
+########  Increase View ID  ########
+//$newValue, I_INT32, 3000
+
+########  Load Quest Lua  ########
+//$inpQuest, I_FILE, /path/to/quest/list/file
+
+########  Resize Font  ########
+//$newFontHgt, I_INT8, 15
+
+########  Custom DLL list file  ########
+//$customDLL, I_FILE, /path/to/dll/list/file
+
+########  Use Custom Font  ########
+//$newFont, I_FONT, Arial
+
+########  Icon File  ########
+//$inpIconFile, I_FILE, path/to/icon/file
