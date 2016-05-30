@@ -136,7 +136,7 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
     +   " 74 6E"              //JZ SHORT loc_735E71
     +   " 89 45 FA"           //MOV DWORD PTR SS:[EBP-6], EAX
     +   " 31 D2"              //XOR EDX, EDX
-    +   " 66 C7 45 FE 39 00"  //MOV DWORD PTR SS:[EBP-2], 39 ; char 9
+    +   " 66 C7 45 FE 39 00"  //MOV WORD PTR SS:[EBP-2], 39 ; char 9
     +   " 52"                 //PUSH EDX
     +   " 68" + MakeVar(6)    //PUSH addr5 ; INI filename
     +   " 6A 74"              //PUSH 74
@@ -175,7 +175,7 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
     +   " 75 97"              //JNZ SHORT
     +   " 61"                 //POPAD
     +   " C9"                 //LEAVE
-    +   " C3 00"              //RETN
+    +   " C3 00"              //RETN and a gap before strings begin
     ;
 
     //Step 4 - Get the INI file name from user
@@ -185,31 +185,29 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
 
     iniFile = ".\\" + iniFile;
 
-    //Step 5.1 - Put all the strings in an array
+    //Step 5.1 - Put all the strings in an array (we need their individual lengths later)
     var strings = ["KERNEL32", "GetPrivateProfileStringA", "WritePrivateProfileStringA", "Data", iniFile];
 
-    //Step 5.2 - Calculate size of free space that the code & strings will need
-    var size = code.byteCount();
-    for (var i = 0; i < strings.length; i++)
-    {
-        size = size + strings[i].length + 1;//1 for NULL
-    }
-
-    //Step 5.3 - Find free space to inject our code
-    var free = Exe.FindSpace(size + 4);
+    //Step 5.2 - Join the strings with NULL in between and convert to Hex
+    var strCode = Ascii2Hex(strings.join("\x00"));
+    
+    //Step 5.3 - Find Free space for insertion
+    var size = code.byteCount() + strCode.byteCount();
+    var free = Exe.FindSpace(size);
     if (free === -1)
         return "Failed in Step 5 - Not enough free space";
 
     var freeVirl = Exe.Real2Virl(free, DIFF);
-
+    
     //Step 5.4 - Create a call to the free space that was found before
     Exe.ReplaceInt32(fnOffset + 1, freeVirl - Exe.Real2Virl(fnOffset + 5, CODE));
 
     //Step 5.5 - Fill in the Blanks
-    var memPosition = freeVirl + code.byteCount();
-    code = SetValue(code, 1, memPosition);//KERNEL32
     code = SetValue(code, 2, Exe.FindFunction("GetModuleHandleA", "KERNEL32.dll"));
     code = SetValue(code, 3, Exe.FindFunction("GetProcAddress", "KERNEL32.dll"));
+    
+    var memPosition = freeVirl + code.byteCount();
+    code = SetValue(code, 1, memPosition);//KERNEL32
 
     memPosition = memPosition + strings[0].length + 1;//1 for null
     code = SetValue(code, 4, memPosition);//GetPrivateProfileStringA
@@ -225,15 +223,8 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
 
     code = SetValue(code, 8, (AddPak - (freeVirl + 115) - 5));//AddPak function
 
-    //Step 5.6 - Add the strings into our code as well
-    for (var i=0; strings[i]; i++)
-    {
-        code = code + Ascii2Hex(strings[i]) + " 00";
-    }
-    code = code + " 00".repeat(8);
-
-    //Step 5.7 - Insert everything.
-    Exe.InsertHex(free, code, size + 4);
+    //Step 5.7 - Insert everything at free space
+    Exe.InsertHex(free, code + strCode, size);
 }
 
 function EMG_V2(grf, setECX, fnOffset, AddPak)
@@ -281,11 +272,11 @@ function EMG_V2(grf, setECX, fnOffset, AddPak)
     ;
     var unitSize = template.byteCount();
 
-    //Step 4.2 - Get Size of code & strings to find space
-    var strCode = grfNames.join("\x00") + "\x00";
-    var size = grfNames.length * unitSize + 2 + strCode.length;
+    //Step 4.2 - Join the strings with NULL in between and convert to Hex
+    var strCode = Ascii2Hex(grfNames.join("\x00"));
 
     //Step 4.3 - Find Free space for insertion
+    var size = grfNames.length * unitSize + 2 + strCode.byteCount();
     var free = Exe.FindSpace(size);
     if (free === -1)
         return "Failed in Step 4 - Not enough free space";
@@ -305,11 +296,10 @@ function EMG_V2(grf, setECX, fnOffset, AddPak)
         diff += unitSize;
     }
     code += " C3 00";//RETN and 1 extra NULL
-    code += Ascii2Hex(strCode);
- //   return code;
+
     //Step 5.1 - Create a call to the free space that was found before.
     Exe.ReplaceInt32(fnOffset + 1, freeVirl - Exe.Real2Virl(fnOffset + 5, CODE));
 
     //Step 5.2 - Insert everything at free space
-    Exe.InsertHex(free, code, size);
+    Exe.InsertHex(free, code + strCode, size);
 }

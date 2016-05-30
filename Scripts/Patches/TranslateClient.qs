@@ -7,7 +7,7 @@ function TranslateClient()
 {
     //Step 1 - Open the text file for reading
     var f = new File();
-    if (!f.Open(APP_PATH + "patches/TranslateClient.txt", 'r'))
+    if (!f.Open(APP_PATH + "Scripts/Patches/TranslateClient.txt", 'r'))
         return "Failed in Step 1 - Unable to open Translation file";
 
     var offset = -1;

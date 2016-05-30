@@ -22,7 +22,7 @@ function SetValue(code, index, value, count)
     if (typeof(value) == "number")
         value = Num2Hex(value);
 
-    if (typeof(onlyOnce) !== "number")
+    if (typeof(count) !== "number")
         count = 1;
 
     var pattern = MakeVar(index);
