@@ -295,6 +295,8 @@ RegisterPatch(113, "HideQuest", "Hide Quest Button", "UI", 12, "Neo", "Hide Ques
 RegisterPatch(114, "ChangeVendingLimit", "Change Vending Limit [Experimental]", "Data", 0, "Neo", "Change the Vending Limit of 1 Billion zeny to user specified value", false);
 
 RegisterPatch(115, "EnableEffectForAllMaps", "Enable Effect for all Maps [Experimental]", "Data", 0, "Neo", "Make the client load the corresponding file in EffectTool folder for all maps", false);
+
+RegisterPatch(116, "EnableTipOnStartup", "Enable Tip Window on Startup", "UI", 0, "Make the client actually show the Tip Window on startup, if it was checked/selected last time", false);
 /*        Custom Font patch already does this irrespective of LangType - to be removed
 RegisterPatch(151, "UseArialOnAllLangTypes", "Use Arial on All LangTypes", "UI", 0, "Ai4rei/AN, Shakto", "Makes Arial the default font on all LangTypes (it's enable ascii by default)", true);
 */
