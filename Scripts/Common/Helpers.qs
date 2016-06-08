@@ -352,10 +352,15 @@ function GetInstruction(offset)
         "OpCode" : Exe.GetUint8(offset),
         "OpCode2": -1,
         "ModRM"  : Exe.GetUint8(offset + 1),
+        "SIB"    : -1,
 
         "Mode"   : -1,
         "RegD"   : -1,
         "RMem"   : -1,
+
+        "Scale"  : -1,
+        "Index"  : -1,
+        "Base"   : -1,
 
         "SrcImm" : -1,
         "TgtImm" : -1,
@@ -386,9 +391,15 @@ function GetInstruction(offset)
     if (instr.Size === -1)
     {
         instr.Size = 2;
-        if (instr.RMem === 0x4 && instr.Mode !== 0x3)
+        if (instr.RMem === 0x4 && instr.Mode !== 0x3) //SIB mode
+        {
+            instr.SIB = Exe.GetUint8(offset + instr.Size);
             instr.Size++;
 
+            instr.Scale = Math.pow(2, (instr.SIB >> 6) & 0x3);
+            instr.Index = (instr.SIB >> 3) & 0x7;
+            instr.Base  = (instr.SIB) & 0x7;
+        }
         if (instr.Mode === 0x1)
         {
             instr.TgtImm = Exe.GetInt8(offset + instr.Size);

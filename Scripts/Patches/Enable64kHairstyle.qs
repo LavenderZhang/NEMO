@@ -5,252 +5,362 @@
 
 function Enable64kHairstyle()
 {
-    //Step 1.1 - Find the Format String "인간족\머리통\%s\%s_%s.%s"
-    var code = "\xC0\xCE\xB0\xA3\xC1\xB7\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s";
-    var doramOn = false;
-    var offset = Exe.FindString(code, REAL);
+    //Step 1.1 - Find the format Strings
+    var formats = [
+        "\xB8\xD3\xB8\xAE\\\xB8\xD3\xB8\xAE%s_%s_%d.pal",                                         //Head Palette
+        "\xC0\xCE\xB0\xA3\xC1\xB7\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s",                       //Hairstyle sprite & act
+        "\xBE\xC7\xBC\xBC\xBB\xE7\xB8\xAE\\%s\\%s_\xB9\xE8\xC6\xB2\xBF\xC2\xB6\xF3\xC0\xCE%s.%s", //Unknown but depends on hairstyle number
+        "\xBE\xC7\xBC\xBC\xBB\xE7\xB8\xAE\\%s\\%s%s.%s",                                          //Unknown2 but depends on hairstyle number
+    ];
 
-    if (offset === -1) //Doram Client
+    var strOffs = [];
+    for (var i = 0; i < formats.length; i++)
     {
-        code = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s"; // "\머리통\%s\%s_%s.%s"
-        doramOn = true;
-        offset = Exe.FindString(code, REAL);
-    }
-    if (offset === -1)
-        return "Failed in Step 1 - String not found";
-
-    //Step 1.2 - Change the 2nd %s to %u
-    Exe.ReplaceInt8(offset + code.length - 7, 0x75);
-
-    //Step 1.3 - Find the string reference
-    offset = Exe.FindHex("68" + Num2Hex(Exe.Real2Virl(offset, DATA)));
-    if (offset === -1)
-        return "Failed in Step 1 - String reference missing";
-    //Step 2.1 - Move offset to previous instruction which should be an LEA reg, [ESP+x] or LEA reg, [EBP-x]
-    if (EBP_TYPE)
-        offset = offset - 3;
-    else
-        offset = offset - 4;
-
-    if (Exe.GetUint8(offset) !== 0x8D) // x > 0x7F => accomodating for the extra 3 bytes of x
-        offset = offset - 3;
-
-    if (Exe.GetUint8(offset) !== 0x8D)
-        return "Failed in Step 2 - Unknown instruction before reference";
-
-    //Step 2.2 - Extract the register code used in the second last PUSH reg32 before the LEA instruction (0x8D)
-    var regNum = Exe.GetUint8(offset - 2) - 0x50;
-    if (regNum < 0 || regNum > 7)
-        return "Failed in Step 2 - Missing Reg PUSH";
-
-    if (EBP_TYPE)
-        regc = Num2Hex(0x45 | (regNum << 3), 1);
-    else
-        regc = Num2Hex(0x44 | (regNum << 3), 1);
-
-    //Step 2.3 - Look for the location where it is assigned. Dont remove the ?? at the end, the code size is used later.
-    if (EBP_TYPE) //VC9-VC10
-    {
-        code =
-            " 83 7D ?? 10"       //CMP DWORD PTR SS:[EBP-y], 10 ; y is unknown
-        +   " 8B" + regc + " ??" //MOV reg32, DWORD PTR SS:[EBP-z] ; z = y+5*4
-        +   " 73 03"             //JAE SHORT addr ; after LEA below
-        +   " 8D" + regc + " ??" //LEA reg32, [EBP-z]
-        ;
-    }
-    else
-    {
-        code =
-            " 83 7C 24 ?? 10"       //CMP DWORD PTR SS:[ESP+y], 10 ; y is unknown
-        +   " 8B" + regc + " 24 ??" //MOV reg32, DWORD PTR SS:[ESP+z] ; z = y+5*4
-        +   " 73 04"                //JAE SHORT addr ; after LEA below
-        +   " 8D" + regc + " 24 ??" //LEA reg32, [ESP+z]
-        ;
-    }
-    var offset2 = Exe.FindHex(code, offset - 0x50, offset);
-
-    if (offset2 === -1) //VC11
-    {
-        if (EBP_TYPE)
+        strOffs[i] = Exe.FindString(formats[i], REAL);
+        if (strOffs[i] === -1 && i == 1)
         {
-            code =
-                " 83 7D ?? 10"          //CMP DWORD PTR SS:[EBP-y], 10 ; y is unknown
-            +   " 8D" + regc + " ??"    //LEA reg32, [EBP-z] ; z = y+5*4
-            +   " 0F 43" + regc + " ??" //CMOVAE reg32, DWORD PTR SS:[EBP-z]
-            ;
+            formats[i] = "\\\xB8\xD3\xB8\xAE\xC5\xEB\\%s\\%s_%s.%s";
+            strOffs[i] = Exe.FindString(formats[i], REAL);
+        }
+        if (strOffs[i] === -1)
+            break;
+    }
+    if (i !== formats.length)
+        return "Failed in Step 1 - One of the formats is missing";
+
+    //Step 1.2 - Replace %s with %u in relevant positions
+    Exe.ReplaceInt8(strOffs[0] + 10, 0x75); //1st one
+    Exe.ReplaceInt8(strOffs[1] + formats[1].length - 7, 0x75);//2nd one
+    Exe.ReplaceInt8(strOffs[2] + 10, 0x75); //1st one
+    Exe.ReplaceInt8(strOffs[2] + 13, 0x75); //2nd one
+    Exe.ReplaceInt8(strOffs[3] + 10, 0x75); //1st one
+    Exe.ReplaceInt8(strOffs[3] + 13, 0x75); //2nd one
+
+    //Step 1.3 - Find their references (PUSHes)
+    for (var i = 0; i < strOffs.length; i++)
+    {
+        strOffs[i] = Exe.FindHex("68" + Num2Hex(Exe.Real2Virl(strOffs[i])));
+        if (strOffs[i] === -1)
+            break;
+    }
+    if (i !== strOffs.length)
+        return "Failed in Step 1 - One or more references missing";
+
+    //Step 2.1 - Find the code which utilizes the two table addresses (tblAddr1 & tblAddr2)
+    var code =
+        " 8B ?? ?? ?? ?? 00" //MOV reg32_A, DWORD PTR DS:[tblAddr1]
+    +   " EB 0A"             //JMP SHORT addr
+    +   " ?? ??"             //CMP reg32_B, reg32_C or TEST reg32_B, reg32_B
+    +   " 75 ??"             //JNE SHORT addr2
+    +   " 8B ?? ?? ?? ?? 00" //MOV reg32_A, DWORD PTR DS:[tblAddr2]
+    +   " 8B 45 00"          //MOV reg32_D, DWORD PTR SS:[EBP] <= addr
+    +   " 8B"                //MOV reg32_E, DWORD PTR DS:[reg32_D*4 + reg32_A]
+    ;
+    var type = 1;
+    var offset = Exe.FindHex(code, strOffs[1] - 0xA0, strOffs[1] - 0x70); //VC9 pattern
+
+    if (offset === -1)
+    {
+        code =
+            " 8B ?? ?? ?? ?? 00" //MOV reg32_A, DWORD PTR DS:[refAddr]
+        +   " 8B ?? ??"          //MOV reg32_E, DWORD PTR DS:[reg32_D*4 + reg32_A]
+        +   " 8B"                //MOV reg32_D, reg32_E
+        ;
+        type = 2;
+        offset = Exe.FindHex(code, strOffs[1] - 0xC0, strOffs[1] - 0x90); //VC10 pattern
+    }
+    if (offset === -1)
+    {
+        code = code.replace("8B ??", "A1"); //reg32_A is EAX
+        code = code.replace("?? 8B", "?? 80");//Change the last MOV to CMP BYTE PTR DS:[reg32_E], 0
+        type = 3;
+        offset = Exe.FindHex(code, strOffs[1] - 0xD0, strOffs[1] - 0x90); //VC11 pattern
+    }
+    if (offset === -1)
+        return "Failed in Step 2 - Table access code missing";
+
+    //Step 2.2 - Extract the table Addresses
+    if (type === 1)
+    {
+        var tblAddr1 = Exe.GetHex(offset + 02, 4);
+        var tblAddr2 = Exe.GetHex(offset + 14, 4);
+    }
+    else
+    {
+        var offset2 = Exe.FindHex(code, offset + code.byteCount(), strOffs[1] - 0x90);
+        if (offset2 === -1)
+            return "Failed in Step 2 - Second RefAddr missing";
+
+        if (type === 2)
+        {
+            var tblAddr1 = Exe.GetHex(offset + 2, 4);
+            var tblAddr2 = Exe.GetHex(offset2 + 2, 4);
         }
         else
         {
-            code =
-                " 83 7C 24 ?? 10"          //CMP DWORD PTR SS:[ESP+y], 10 ; y is unknown
-            +   " 8D" + regc + " 24 ??"    //LEA reg32, [ESP+z] ; z = y+5*4
-            +   " 0F 43" + regc + " 24 ??" //CMOVAE reg32, DWORD PTR SS:[ESP+z]
-            ;
+            var tblAddr1 = Exe.GetHex(offset + 1, 4);
+            var tblAddr2 = Exe.GetHex(offset2 + 1, 4);
         }
-        offset2 = Exe.FindHex(code, offset - 0x50, offset);
     }
-    if (offset2 === -1)
-        return "Failed in Step 2 - Register assignment missing";
 
-    //Step 2.4 - Save the offset2 and code size (We need to NOP out the excess)
-    var assignOffset = offset2;
+    //Step 2.3 - Find space for inserting 4 bytes (to serve as saveAddr)
+    var free = Exe.FindSpace(4);
+    if (free === -1)
+        return "Failed in Step 2 - Not enough free space";
+
+    //Step 2.4 - Do a zero insert so it is locked by the patch
+    Exe.InsertHex(free, "00 00 00 00", 4);
+
+    //Step 2.5 - Save the address
+    var saveAddr = Num2Hex(Exe.Real2Virl(free));
+
+    //Step 2.6 - Find all the references to tblAddr2 (tblAddr1 reference is above it)
+    code =
+        tblAddr2 //MOV reg32_A, DWORD PTR DS:[tblAddr2]
+    +   " 8B"    //MOV reg32_E, DWORD PTR DS:[reg32_D*4 + reg32_A] or MOV reg32_D, SS:[LOCAL.x]
+    ;
+
+    var offsets = Exe.FindAllHex(code);
+    if (offsets.length !== 3)
+        return "Failed in Step 2 - Extra/Less matches found";
+
+    for (var i = 0; i < 3; i++)
+    {
+        //Step 3.1 - Fix the Lookup for tblAddr2
+        var instr = {"Prefix": ""};
+        var result = __FixLookup(offsets[i], saveAddr, instr);
+        if (typeof(result) === "string")
+            return "Failed in Step 3.1 (" + i + ") - " + result;
+
+        //Step 3.2 - Find the tblAddr1 reference before tblAddr2
+        offset = Exe.FindHex(tblAddr1 + " 8B", offsets[i] - 0x40, offsets[i] - 2);
+        if (offset === -1)
+            offset = Exe.FindHex(tblAddr1 + " EB", offsets[i] - 0x40, offsets[i] - 2);//only for VC9
+        else
+            instr = {"Prefix": ""};
+
+        if (offset === -1)
+            return "Failed in Step 3.2 (" + i + ") - First table reference missing";
+
+        //Step 3.3 - Repeat 3.1 for tblAddr1
+        result = __FixLookup(offset, saveAddr, instr);
+        if (typeof(result) === "string")
+            return "Failed in Step 3.3 (" + i + ") - " + result;
+    }
+    for (var i = 0; i < 3; i++)
+    {
+        //Step 4.1 - Find the CALL after PUSH OFFSET
+        offset = Exe.FindHex("E8", strOffs[i] + 5, strOffs[i] + 15);
+        if (offset === -1)
+            return "Failed in Step 4.1 - " + i + " : CALL missing after reference";
+
+        var afterCall = Exe.Real2Virl(offset + 5);
+
+        //Step 4.2 - Prep Function code for changing the Arguments
+        code =
+            " 50"              //PUSH EAX
+        +   " A1" + saveAddr   //MOV EAX, DWORD PTR DS:[saveAddr]
+        +   " 89 44 24 10"     //MOV DWORD PTR SS:[ESP+x], EAX ; x is 14 or
+        +   " 89 44 24 14"     //MOV DWORD PTR SS:[ESP+y], EAX ; y is 18
+        +   " 58"              //POP EAX
+        +   " E9" + MakeVar(1) //JMP origFunc
+        ;
+
+        //Step 4.3 - Remove unnecessary MOVs
+        if (i === 1)
+            code = code.replace(" 89 44 24 10", "");
+
+        if (i === 0)
+            code = code.replace(" 89 44 24 14", "");
+
+        var csize = code.byteCount();
+
+        //Step 4.4 - Find free space for insertion
+        free = Exe.FindSpace(csize);
+        if (free === -1)
+            return "Failed in Step 4.4 - " + i + " : Not enough free space";
+
+        var freeVirl = Exe.Real2Virl(free);
+
+        //Step 4.5 - Fill in the blanks
+        code = SetValue(code, 1, afterCall + Exe.GetInt32(offset + 1) - (freeVirl + csize));
+
+        //Step 4.6 - Insert the code at free space
+        Exe.InsertHex(free, code, csize);
+
+        //Step 4.7 - Update the CALL
+        Exe.ReplaceInt32(offset + 1, freeVirl - afterCall);
+    }
+
+    //Step 5.1 - Find the Limiting comparison for hairstyle spr+act
+    if (type === 1)
+    {
+        code =
+            " 3B ??"                //CMP reg32_A, reg32_B
+        +   " 8B ??"                //MOV reg32_C, reg32_D
+        +   " 89 ?? 24 ??"          //MOV DWORD PTR SS:[LOCAL.x], reg32_E
+        +   " 7C 05"                //JL SHORT addr
+        +   " 83 ?? 1B"             //CMP reg32_A, 1B
+        +   " 7E 07"                //JLE SHORT addr2
+        +   " C7 45 00 0D 00 00 00" //MOV DWORD PTR SS:[EBP], 0D ; addr
+        ;
+        var pos = code.byteCount() - 9;
+    }
+    else if (type === 2)
+    {
+        code =
+            " 3B ??"             //CMP reg32_A, reg32_B
+        +   " 7C 05"             //JL SHORT addr
+        +   " 83 ?? 1D"          //CMP reg32_A, 1D
+        +   " 7E 06"             //JLE SHORT addr2
+        +   " C7 ?? 0D 00 00 00" //MOV DWORD PTR DS:[reg32_C], 0D ; addr
+        ;
+        var pos = code.byteCount() - 8;
+    }
+    else
+    {
+        code =
+            " 85 ??"             //TEST reg32_A, reg32_A
+        +   " 78 05"             //JS SHORT addr
+        +   " 83 F8 1D"          //CMP reg32_A, 1D
+        +   " 7E 06"             //JLE SHORT addr2
+        +   " C7 ?? 0D 00 00 00" //MOV DWORD PTR DS:[reg32_C], 0D ; addr
+        ;
+        var pos = code.byteCount() - 8;
+    }
+    offset = Exe.FindHex(code, strOffs[1] - 0x400, strOffs[1]);
+    if (offset === -1)
+        return "Failed in Step 5 - First comparison missing";
+
+    //Step 5.2 - Change the JLE to JMP
+    Exe.ReplaceInt8(offset + pos, 0xEB);
+
+    //Step 5.3 - Find the Limiting comparison for the unknown stuff
+    code =
+        " B9 00 00 00" //CMP reg32_A, 0B9
+    +   " 75 ??"       //JNE SHORT addr
+    +   " 83 ?? 1B"    //CMP DWORD PTR DS:[reg32_B], 1B
+    +   " 7E"          //JLE SHORT addr
+    ;
+    offset = Exe.FindHex(code, strOffs[2] - 0x400, strOffs[2]); //VC9 and early VC10
+
+    if (offset === -1)
+    {
+        code =
+            " B9 00 00 00" //CMP DWORD PTR SS:[LOCAL.x], 0B9
+        +   " 75 ??"       //JNE SHORT addr
+        +   " 83 7D ?? 10" //CMP DWORD PTR SS:[LOCAL.y], 10
+        +   " 72"          //JB SHORT addr
+        ;
+        offset = Exe.FindHex(code, strOffs[2] - 0x400, strOffs[2]); //VC11 and late VC10
+    }
+    if (offset === -1)
+        return "Failed in Step 5 - Second comparison missing";
+
+    //Step 5.4 - Change the JLE/JB to JMP
+    Exe.ReplaceInt8(offset + code.byteCount() - 1, 0xEB);
+    return true;
+}
+
+function __FixLookup(offset, saveAddr, instr)
+{
+    //Step .1 - Check if reg32_A is EAX (for EAX opcode is A1 otherwise opcode is 8B modrm)
+    if (Exe.GetUint8(offset - 1) === 0xA1)
+    {
+        offset--;
+        var movSize = 5;
+    }
+    else
+    {
+        offset -= 2;
+        var movSize = 6;
+    }
+
+    //Step .2 - Save VIRTUAL location after MOV
+    var offVirl = Exe.Real2Virl(offset + movSize);
+
+    //Step .3 - If instruction is not provided extract from location after MOV
+    if (typeof(instr.OpCode) === "undefined")
+    {
+        var hash = GetInstruction(offset + movSize);
+        hash.Prefix = "";
+    }
+    else
+    {
+        var hash = instr;
+    }
+
+    //Step .4 - If instruction is not a lookup (if not save it as a prefix)
+    var prefix = hash.Prefix;
+    if (hash.Mode !== 0 || hash.RMem !== 4)
+    {
+        prefix = Exe.GetHex(offset + movSize, hash.Size);
+        hash = GetInstruction(offset + movSize + hash.Size);
+    }
+
+    //Step .5 - Check if the instruction is a lookup ( MOV reg32_E, DWORD PTR DS:[reg32_D*4 + reg32_A] )
+    if (hash.OpCode !== 0x8B || hash.SIB === -1 || hash.Scale !== 4)
+        return "Unknown opcode";
+
+    //Step .6 - Prep function code for saving the hairstyle to saveAddr
+    var code =
+        prefix                      //MOV instruction if any in between the tblAddr assignment and table lookup
+    +   " 89 XX" + saveAddr         //MOV DWORD PTR DS:[saveAddr], reg32_D
+    +   Exe.GetHex(offset, movSize) //MOV DWORD PTR reg32_A, DS:[tblAddr]
+    +   " E9" + MakeVar(1)          //JMP addr;
+    ;
     var csize = code.byteCount();
 
-    //Step 3.1 - Find the start of the function (has a common signature like many others)
-    code =
-        " 6A FF"             //PUSH -1
-    +   " 68 ?? ?? ?? 00"    //PUSH value
-    +   " 64 A1 00 00 00 00" //MOV EAX, FS:[0]
-    +   " 50"                //PUSH EAX
-    +   " 83 EC"             //SUB ESP, const
-    ;
-    offset = Exe.FindHex(code, offset2 - 0x1B0, offset2);
+    //Step .7 - Find space for insertion
+    var free = Exe.FindSpace(csize);
+    if (free === -1)
+        return "Not enough free space";
 
-    if (offset === -1) //const is > 0x7F
+    var freeVirl = Exe.Real2Virl(free);
+
+    //Step .8 - Fill in the blanks
+    code = code.replace(" XX", Num2Hex(0x05 | (hash.Index << 3), 1));
+    code = SetValue(code, 1, offVirl - (freeVirl + csize));
+
+    //Step .9 - Insert code into free space
+    Exe.InsertHex(free, code, csize);
+
+    //Step .10 - Prep code to the CALL the function and remove reg32_D*4 in the original lookup
+    code = " E9" + MakeVar(1);
+
+    if (Exe.GetUint8(offset + movSize) === 0x8B)
     {
-        code = code.replace(" 83", " 81");
-        offset = Exe.FindHex(code, offset2 - 0x280, offset2);
-    }
-    if (offset === -1)
-        return "Failed in Step 3 - Function start missing";
+        if (prefix !== "")
+            code += " 90".repeat(prefix.byteCount());
 
-    //Step 3.2 - Update offset to location after SUB ESP, const
-    offset += code.byteCount();
-
-    //Step 3.3 - Get the Stack offset w.r.t. ESP/EBP for Arg.5
-    var arg5Dist = 5*4; //for the 5 PUSHes of the arguments
-
-    if (EBP_TYPE)
-    {
-        arg5Dist += 4; //Account for the PUSH EBP in the beginning
-    }
-    else
-    {
-        arg5Dist += 7*4;//Account for PUSH -1, PUSH addr and 5 reg32 PUSHes
-
-        if (Exe.GetUint8(offset - 2) === 0x81) // Add the const from SUB ESP, const
-            arg5Dist += Exe.GetInt32(offset);
-        else
-            arg5Dist += Exe.GetInt8(offset);
-
-        //Step 3.4 - Account for an extra PUSH instruction (security related) in VC9 clients
-        code =
-            " A1 ?? ?? ?? 00" //MOV EAX, DWORD PTR DS:[__security_cookie];
-        +   " 33 C4"          //XOR EAX, ESP
-        +   " 50"             //PUSH EAX
+        code +=
+            " 8B" + Num2Hex((hash.ModRM & 0xF8) | hash.Base, 1)
+        +   " 90"
         ;
-        if (Exe.FindHex(code, offset + 0x4, offset + 0x20) !== -1)
-            arg5Dist += 4;
     }
+    if (Exe.GetUint8(offset) === 0x8B)
+        code = " 90" + code;
 
-    //Step 3.5 - Prep code to change assignment (hairstyle index instead of the string)
-    if (EBP_TYPE)
-        code = " 8B" + regc + Num2Hex(arg5Dist, 1); //MOV reg32_A, DWORD PTR SS:[EBP + arg5Dist]; ARG.5
-    else if (arg5Dist > 0x7F)
-        code = " 8B" + Num2Hex(0x84 | (regNum << 3), 1) +   " 24" + Num2Hex(arg5Dist); //MOV reg32_A, DWORD PTR SS:[ESP + arg5Dist]; ARG.5
-    else
-        code = " 8B" + regc +   " 24" + Num2Hex(arg5Dist, 1); //MOV reg32_A, DWORD PTR SS:[ESP + arg5Dist]; ARG.5
+    code = SetValue(code, 1, freeVirl - offVirl);
 
-    code += " 8B" + Num2Hex((regNum << 3) | regNum, 1); //MOV reg32_A, DWORD PTR DS:[reg32_A]
-    code += " 90".repeat(csize - code.byteCount()); //Fill rest with NOPs
+    //Step .11 - Replace it at offset
+    Exe.ReplaceHex(offset, code);
 
-    //Step 3.6 - Replace the original at assignOffset
-    Exe.ReplaceHex(assignOffset, code);
+    //Step .12 - Save relevant fields to 'instr'
+    instr.OpCode  = hash.OpCode;
+    instr.ModRM   = hash.ModRM;
+    instr.SIB     = hash.SIB;
 
-    //Step 4.1 - Find the string table fetchers
-    code =
-        " 8B ?? ?? ?? ?? 00" //MOV reg32_A, DWORD PTR DS:[addr]
-    +   " 8B ?? 00"          //MOV reg32_B, DWORD PTR DS:[EBP]
-    +   " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A]
-    ;
-    var offsets = Exe.FindAllHex(code, offset, assignOffset);
+    instr.Mode    = hash.Mode;
+    instr.RMem    = hash.RMem;
 
-    if (offsets.length === 0)
-    {
-        code =
-            " 8B ??"             //MOV reg32_B, DWORD PTR DS:[reg32_C]
-        +   " 8B ?? ?? ?? ?? 00" //MOV reg32_A, DWORD PTR DS:[addr]
-        +   " 8B 14"             //MOV EDX, DWORD PTR DS:[reg32_B * 4 + reg32_A]
-        ;
-        offsets = Exe.FindAllHex(code, offset, assignOffset);
-    }
-    if (offsets.length === 0)
-    {
-        code = code.replace("8B ?? ??", "A1 ??"); //reg32_A is EAX
-        offsets = Exe.FindAllHex(code, offset, assignOffset);
-    }
-    if (offsets.length === 0)
-        return "Failed in Step 4 - Table fetchers missing";
+    instr.Scale   = hash.Scale;
+    instr.Index   = hash.Index;
+    instr.Base    = hash.Base;
 
-    //Step 4.2 - Remove the reg32_B * 4 from all the matches
-    for (var i = 0; i < offsets.length; i++)
-    {
-        offset2 = offsets[i] + code.byteCount();
-        Exe.ReplaceInt16(offset2 - 1, 0x9010 + (Exe.GetInt8(offset2) & 0x7));
-    }
-
-    //Step 5.1 - Find the Hairstyle limiting comparison within the function
-    code =
-        " 7C 05"    //JL SHORT addr1; skips the next two instructions
-    +   " 83 ?? ??" //CMP reg32_A, const; const = max hairstyle ID
-    +   " 7E ??"    //JLE SHORT addr2; skip the next assignment - ?? should be 06 or 07
-    +   " C7"       //MOV DWORD PTR DS:[reg32_B], 0D
-    ;
-    offset2 = Exe.FindHex(code, offset + 4, offset + 0x50);//VC9 - VC10
-
-    if (offset2 === -1)
-    {
-        code = code.replace("7C", "78"); //changing JL to JS
-        offset2 = Exe.FindHex(code, offset + 4, offset + 0x50);//VC11
-    }
-    if (offset2 === -1 && doramOn) //For Doram Client, its farther away since there are extra checks for Job ID within Doram Range or Human Range
-    {
-        offset2 = Exe.FindHex(code, offset + 0x100, offset + 0x200);
-    }
-    if (offset2 === -1)
-        return "Failed in Step 5 - Limit checker missing";
-
-    //Step 5.2 - Update offset2 to the location of MOV DWORD
-    offset2 += code.byteCount();
-
-    //Step 5.3 - Change the JLE to JMP
-    Exe.ReplaceInt8(offset2 - 3, 0xEB);
-
-    //Step 5.4 - Change 0D to 02 in MOV instruction
-    code = Exe.GetUint8(offset2);
-    if (code === 0x04 || code > 0x07)
-        Exe.ReplaceInt8(offset2 + 2, 0x02);
-    else
-        Exe.ReplaceInt8(offset2 + 1, 0x02);
-
-    //Remove the && 0 to enable for Doram
-    if (doramOn && 0) //Repeat 5a & 5b for Doram race which appears before offset2.
-    {
-        //Step 6.1 - Find the Hairstyle limiting comparison within the function for Doram race
-        code =
-            " 7C 05"    //JL SHORT addr1; skips the next two instructions
-        +   " 83 ?? ??" //CMP reg32_A, const; const = max hairstyle ID
-        +   " 7C ??"    //JLE SHORT addr2; skip the next assignment - ?? should be 06 or 07
-        +   " C7"       //MOV DWORD PTR DS:[reg32_B], 06
-        ;
-
-        offset = Exe.FindHex(code, offset2 - 0x75, offset2 - 0x10);
-        if (offset === -1)
-            return "Failed in Step 6 - Doram Limit Checker missing";
-
-        //Step 6.2 - Update offset to location of MOV DWORD
-        offset += code.byteCount();
-
-        //Step 6.3 - Change the JLE to JMP
-        Exe.ReplaceInt8(offset - 3, 0xEB);
-
-        //Step 6.4 - Change 0D to 02 in MOV instruction
-        code = Exe.GetUint8(offset);
-        if (code === 0x04 || code > 0x07)
-            Exe.ReplaceInt8(offset + 2, 0x02);
-        else
-            Exe.ReplaceInt8(offset + 1, 0x02);
-    }
+    instr.Size    = hash.Size;
+    instr.NextLoc = hash.NextLoc;
+    instr.Prefix  = prefix;
     return true;
 }
 
