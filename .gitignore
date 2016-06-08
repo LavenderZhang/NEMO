@@ -1,0 +1,8 @@
+TestData/
+Profiles/
+Scripts/Expt/*
+PatchList.log
+InputList.db
+NEMO.ini
+FailedTranslations.txt
+Outputs/*txt
