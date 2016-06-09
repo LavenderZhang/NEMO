@@ -50,7 +50,7 @@ function UseCustomIcon(nomod)
     var icoGrpOff = entry.dataAddr;
 
     //Step 5.1 - Get the new icon file name from user
-    var iconFile = Exe.GetUserInput("$inpIconFile", I_FILE, "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH);
+    var iconFile = Exe.GetUserInput('$inpIconFile', I_FILE, "File Input - Use Custom Icon", "Enter the Icon File", APP_PATH);
     if (!iconFile)
         return "Patch Cancelled";
 
@@ -78,18 +78,18 @@ function UseCustomIcon(nomod)
     {
         var memicondirentry =
         {
-            'bWidth':       Exe.GetInt8(pos),
-            'bHeight':      Exe.GetInt8(pos+1),
-            'bColorCount':  Exe.GetInt8(pos+2),
-            'bReserved':    Exe.GetInt8(pos+3),
-            'wPlanes':      Exe.GetInt16(pos+4),
-            'wBitCount':    Exe.GetInt16(pos+6),
-            'dwBytesInRes': Exe.GetInt32(pos+8),
-            'nID':          Exe.GetInt16(pos+12)
+            "bWidth"       : Exe.GetInt8(pos),
+            "bHeight"      : Exe.GetInt8(pos+1),
+            "bColorCount"  : Exe.GetInt8(pos+2),
+            "bReserved"    : Exe.GetInt8(pos+3),
+            "wPlanes"      : Exe.GetInt16(pos+4),
+            "wBitCount"    : Exe.GetInt16(pos+6),
+            "dwBytesInRes" : Exe.GetInt32(pos+8),
+            "nID"          : Exe.GetInt16(pos+12)
         };
 
-        if (memicondirentry.bColorCount == 0 && memicondirentry.wBitCount == 8 &&
-            memicondirentry.bWidth == 32 && memicondirentry.bWidth == 32) //8bpp 32x32 image
+        if (memicondirentry.bColorCount == 0 && memicondirentry.wBitCount == 8 && //8bpp
+            memicondirentry.bWidth == 32 && memicondirentry.bWidth == 32)         //32x32 image
         {
             entry = __GetRsrcEntry(rsrcTree, [0x3, memicondirentry.nID, 0x412]);//returns negative number on fail or ResourceEntry object on success
             if (entry < 0)
@@ -125,10 +125,10 @@ function __GetRsrcDir(rsrcAddr, offset, id)
 {
     var result =
     {
-        'id'      : id,
-        'addr'    : rsrcAddr + offset,
-        'dirType' : true,
-        'children': []
+        "id"       : id,
+        "addr"     : rsrcAddr + offset,
+        "dirType"  : true,
+        "children" : []
     };
 
     var count = Exe.GetInt16(result.addr + 12) + Exe.GetInt16(result.addr + 14);
@@ -153,11 +153,11 @@ function __GetRsrcFile(rsrcAddr, offset, id)
     offset += rsrcAddr;
     var result =
     {
-        'id'      : id,
-        'addr'    : offset,
-        'dirType' : false,
-        'dataAddr': Exe.Virl2Real(Exe.GetInt32(offset) + Exe.GetImgBase()),
-        'dataSize': Exe.GetInt32(offset + 4)
+        "id"       : id,
+        "addr"     : offset,
+        "dirType"  : false,
+        "dataAddr" : Exe.Virl2Real(Exe.GetInt32(offset) + Exe.GetImgBase()),
+        "dataSize" : Exe.GetInt32(offset + 4)
     };
     return result;
 }
@@ -211,10 +211,10 @@ function __LoadIconFile(fname)
     var pos = 0;
     var icondir =
     {
-        'idReserved' : fp.ReadInt16(pos),
-        'idType'     : fp.ReadInt16(pos + 2),
-        'idCount'    : fp.ReadInt16(pos + 4),
-        'idEntries'  : []
+        "idReserved" : fp.ReadInt16(pos),
+        "idType"     : fp.ReadInt16(pos + 2),
+        "idCount"    : fp.ReadInt16(pos + 4),
+        "idEntries"  : []
     };
     pos += 6;
 

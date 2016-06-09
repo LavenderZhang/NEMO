@@ -6,8 +6,8 @@
 function TranslateClient()
 {
     //Step 1 - Open the text file for reading
-    var f = new File();
-    if (!f.Open(APP_PATH + "Scripts/Patches/TranslateClient.txt", 'r'))
+    var Fp = new File();
+    if (!Fp.Open(APP_PATH + "Scripts/Patches/TranslateClient.txt", 'r'))
         return "Failed in Step 1 - Unable to open Translation file";
 
     var offset = -1;
@@ -15,10 +15,10 @@ function TranslateClient()
     var failmsgs = [];//Array to store all Failure messages
 
     //Step 2 - Loop through the text file, get the respective strings & do findString + replace
-    while (!f.IsEOF())
+    while (!Fp.IsEOF())
     {
         //Step 2.1 - Get Current Line
-        var line = f.ReadLine().trim();
+        var line = Fp.ReadLine().trim();
 
         //Step 2.2 - Check for Valid Line (<prefix>:string)
         var matches = line.match(/^([MFR]):(.*)/);
@@ -75,20 +75,20 @@ function TranslateClient()
             }
         }
     }
-    f.Close();
+    Fp.Close();
 
     //Step 3 - Dump all the Failure messages collected to FailedTranslations.txt
     if (failmsgs.length != 0)
     {
-        var outfile = new File();
-        if (outfile.Open(APP_PATH + "FailedTranslations.txt", 'w'))
+        var outFP = new File();
+        if (outFP.Open(APP_PATH + "FailedTranslations.txt", 'w'))
         {
             for (var i = 0; i < failmsgs.length; i++)
             {
-                outfile.WriteLine(failmsgs[i]);
+                outFP.WriteLine(failmsgs[i]);
             }
         }
-        outfile.Close();
+        outFP.Close();
     }
 
     ///==================================///

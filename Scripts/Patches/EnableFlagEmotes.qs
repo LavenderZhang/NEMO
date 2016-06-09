@@ -26,15 +26,12 @@ function EnableFlagEmotes() //The function is not present in pre-2010 clients
     var refAddr = Exe.Virl2Real(Exe.GetInt32(offset + code.byteCount()));
 
     //Step 2.1 - Get Input file containing the list of Flag Emotes per key
-    var inFile = Exe.GetUserInput("$inpFlag", I_FILE, "File Input - Enable Flag Emoticons", "Enter the Flags list file", APP_PATH + "Inputs/flags.txt");
-    if (!inFile)
+    var Fp = MakeFile('$inpFlag', "File Input - Enable Flag Emoticons", "Enter the Flags list file", APP_PATH + "Inputs/flags.txt");
+    if (!Fp)
         return "Patch Cancelled";
 
     //Step 2.2 - Open the file and read all the entries into an array
     var consts = [];
-    var Fp = new File();
-    Fp.Open(inFile, 'r');
-
     while (!Fp.IsEOF())
     {
         var line = Fp.ReadLine().trim();

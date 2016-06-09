@@ -4,7 +4,7 @@
 //#####################################################\\
 
 delete Import_Info;//Removing any stray values before Patches are selected
-var dllFile = false;
+var dllFP = false;
 
 function UseCustomDLL()
 {
@@ -38,22 +38,19 @@ function UseCustomDLL()
     }
 
     //Step 2.1 - Get the list file containing the dlls and functions to add
-    if (!dllFile)
-        dllFile = Exe.GetUserInput("$customDLL", I_FILE, "File Input - Use Custom DLL", "Enter the DLL info file", APP_PATH + "Inputs/dlls.txt");
+    if (!dllFP)
+        dllFP = MakeFile('$customDLL', "File Input - Use Custom DLL", "Enter the DLL info file", APP_PATH + "Inputs/dlls.txt");
 
-    if (!dllFile)
+    if (!dllFP)
         return "Patch Cancelled";
 
     //Step 2.2 - Read the file and store the dll names and function names into arrays
     var dllNames = [];
     var fnNames = [];
     var dptr = -1;
-    var Fp = new File();
-    Fp.Open(dllFile, 'r');
-
-    while (!Fp.IsEOF())
+    while (!dllFP.IsEOF())
     {
-        var line = Fp.ReadLine().trim();
+        var line = dllFP.ReadLine().trim();
         if (line === "" || line.indexOf("//") == 0)
             continue;
 
@@ -66,7 +63,7 @@ function UseCustomDLL()
         else
             fnNames[dptr].push({"offset":0, "value":line});
     }
-    Fp.Close();
+    dllFP.Close();
 
     //Step 3.1 - Construct the String set (all the names) with the stored data
     var dirSize = dirData.byteCount();//Holds the size of Import Directory Table and IAT values
@@ -172,5 +169,5 @@ function _UseCustomDLL()
         Exe.ClearPatch(15);
         DisableHShield();
     }
-    dllFile = false;
+    dllFP = false;
 }

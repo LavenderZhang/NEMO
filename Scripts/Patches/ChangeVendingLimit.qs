@@ -85,7 +85,7 @@ function ChangeVendingLimit()
     }
 
     //Step 3.1 - Get the new value from user
-    var newValue = Exe.GetUserInput("$vendingLimit", I_INT32, "Number Input", "Enter new Vending Limit (0 - 2,147,483,647):", 1000000000);
+    var newValue = Exe.GetUserInput('$vendingLimit', I_INT32, "Number Input", "Enter new Vending Limit (0 - 2,147,483,647):", 1000000000);
     if (newValue === 1000000000)
         return "Patch Cancelled - Vending Limit not changed";
 

@@ -1,5 +1,5 @@
 ﻿//############################################################################################\\
-//# Change the 'boldtext' comparison JE to JMP inside UIFrameWnd::DrawItemWithCount function #\\
+//# Change the "boldtext" comparison JE to JMP inside UIFrameWnd::DrawItemWithCount function #\\
 //############################################################################################\\
 
 function MoveItemCountUpwards()

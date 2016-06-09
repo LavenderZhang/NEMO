@@ -1,3 +1,20 @@
+//#######################################################\\
+//# Get the filename from user and create a File object #\\
+//# (text mode) using the name.                         #\\
+//#######################################################\\
+
+function MakeFile(varName, title, msg, defName)
+{
+    var inpFile = Exe.GetUserInput(varName, I_FILE, title, msg, defName);
+    if (!inpFile)
+        return false;
+    
+    var f = new File();
+    f.Open(inpFile, 'r');
+    
+    return f;
+}
+
 //###################################################\\
 //# Make a Filler String for use in Insert Codes.   #\\
 //# Pattern: ?? ?? ?? ## where ## is a Uint8 in Hex #\\

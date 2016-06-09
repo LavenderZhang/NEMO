@@ -11,17 +11,13 @@ function LoadCustomQuestLua()
         return "Failed in Step 1 - Quest_function not found";
 
     //Step 2.1 - Get the list file
-    var inFile = Exe.GetUserInput("$inpQuest", I_FILE, 'File Input - Load Custom Quest Lua', 'Enter the Lua list file', APP_PATH);
-    if (!inFile)
+    var Fp = MakeFile('$inpQuest', "File Input - Load Custom Quest Lua", "Enter the Lua list file", APP_PATH);
+    if (!Fp)
         return "Patch Cancelled";
 
     //Step 2.2 - Get the filenames from the list file
     var files = [];
     var ssize = 0;
-
-    var Fp = new File();
-    Fp.Open(inFile);
-
     while (!Fp.IsEOF())
     {
         var line = Fp.ReadLine().trim();

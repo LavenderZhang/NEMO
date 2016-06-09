@@ -71,7 +71,7 @@ function EnableCustom3DBones()
         }
     }
 
-    //Step 4.1 - Find the annoying warning - 'too many vertex granny model!'
+    //Step 4.1 - Find the annoying warning
     offset = Exe.FindString("too many vertex granny model!", VIRTUAL);
 
     //Step 4.2 - Find its reference + the function CALL after

@@ -48,7 +48,7 @@ function ExtendNpcBox()
         return "Failed in Step 1 - Function end missing";
 
     //Step 2.1 - Get new value from user
-    var value = Exe.GetUserInput("$npcBoxLength", I_INT32, "Number Input", "Enter new NPC Dialog box length (2052 - 4096)", 0x804, 0x804, 0x1000);
+    var value = Exe.GetUserInput('$npcBoxLength', I_INT32, "Number Input", "Enter new NPC Dialog box length (2052 - 4096)", 0x804, 0x804, 0x1000);
     if (value === 0x804)
         return "Patch Cancelled - New value is same as old";
 

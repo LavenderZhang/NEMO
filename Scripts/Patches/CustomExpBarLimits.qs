@@ -139,18 +139,15 @@ function CustomExpBarLimits()
     var gJobLevel = Exe.GetInt32(offset + 2);
 
     //Step 4.1 - Get the input file
-    var inpFile = Exe.GetUserInput("$expBarSpec", I_FILE, "File Input - Custom Exp Bar Limits", "Enter the Exp Bar Spec file", APP_PATH + "Inputs/expBarSpec.txt");
-    if (!inpFile)
+    var Fp = MakeFile('$expBarSpec', "File Input - Custom Exp Bar Limits", "Enter the Exp Bar Spec file", APP_PATH + "Inputs/expBarSpec.txt");
+    if (!Fp)
         return "Patch Cancelled";
 
     //Step 4.2 - Extract table from the file
     var idLvlTable = [];
     var tblSize = 0;
     var index = -1;
-
-    var Fp = new File();
-    Fp.Open(inpFile, 'r');
-
+    
     while (!Fp.IsEOF())
     {
         var line = Fp.ReadLine().trim();

@@ -15,7 +15,7 @@ function UseCustomFont()
         return "Failed in Step 1 - Gulim reference not found";
 
     //Step 2.1 - Get the Font name from user
-    var newFont = Exe.GetUserInput("$newFont", I_FONT, 'Font input', 'Select the new Font Family', "Arial");
+    var newFont = Exe.GetUserInput('$newFont', I_FONT, "Font input", "Select the new Font Family", "Arial");
     if (!newFont)
         return "Patch Cancelled";
 
@@ -29,7 +29,7 @@ function UseCustomFont()
         if (free === -1)
             return "Failed in Step 2 - Not enough free space";
 
-        Exe.InsertString(free, "$newFont", newFont.length + 1);
+        Exe.InsertString(free, '$newFont', newFont.length + 1);
     }
 
     var freeVirl = Exe.Real2Virl(free, DIFF);

@@ -62,7 +62,7 @@ function ChatLimit(option)
     if (option === 1) //Change compared value
     {
         //Step 2.1 - Get new value from user
-        var flood = Exe.GetUserInput("$allowChatFlood", I_INT8, "Number Input", "Enter new chat limit (0-127, default is 2):", 2);//Default Limits are 0 and 127 hence no need to specify
+        var flood = Exe.GetUserInput('$allowChatFlood', I_INT8, "Number Input", "Enter new chat limit (0-127, default is 2):", 2);//Default Limits are 0 and 127 hence no need to specify
         if (flood === 2)
             return "Patch Cancelled - New value is same as old";
 

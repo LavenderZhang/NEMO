@@ -21,7 +21,7 @@ function ChangeItemInfo()
         return "Failed in Step 1 - iteminfo reference not found";
 
     //Step 2.1 - Get the new filename from user
-    var myfile = Exe.GetUserInput("$newItemInfo", I_STRING, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", iiName, 1, 28);
+    var myfile = Exe.GetUserInput('$newItemInfo', I_STRING, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", iiName, 1, 28);
     if (!myfile)
         return "Patch Cancelled";
     
@@ -34,7 +34,7 @@ function ChangeItemInfo()
         return "Failed in Step 2 - Not enough free space";
 
     //Step 3.1 - Insert the new name into the free space
-    Exe.InsertString(free, "$newItemInfo", myfile.length);
+    Exe.InsertString(free, '$newItemInfo', myfile.length);
 
     //Step 3.2 - Update the iteminfo reference
     Exe.ReplaceInt32(offset + 1, Exe.Real2Virl(free, DIFF));

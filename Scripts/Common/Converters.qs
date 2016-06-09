@@ -8,7 +8,7 @@
 
 function Ascii2Hex(bytes)
 {
-    var result = '';
+    var result = "";
     for (var i = 0; i < bytes.length; i++)
     {
         var hex = bytes.charCodeAt(i).toString(16).toUpperCase();
@@ -29,10 +29,10 @@ function Hex2Ascii(hex)
 {
     var splits = hex.trim().split(/ /g);
 
-    var result = '';
+    var result = "";
     for (var i = 0; i < splits.length; i++)
     {
-        if (splits[i] === '')
+        if (splits[i] === "")
             continue;
 
         var byt = parseInt(splits[i], 16);
@@ -64,7 +64,7 @@ function Num2Hex(number, count, needBE)
     if ((hex.length % 2) !== 0)
         hex = '0' + hex;
 
-    var result = '';
+    var result = "";
     if (needBE)
     {
         //Set result with hex having higher positions with 00 if no of 'bytes' < count. We can also do le2be of the else part instead but that would be much more time taking.

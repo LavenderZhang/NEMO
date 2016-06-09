@@ -12,13 +12,13 @@ function DisableHShield()
         return "Failed in Step 1 - webclinic address missing";
 
     //Step 1.2 - Find its reference
-    offset = Exe.FindHex("68" + Num2Hex(offset)); //PUSH OFFSET addr; ASCII 'webclinic.ahnlab.com'
+    offset = Exe.FindHex("68" + Num2Hex(offset)); //PUSH OFFSET addr; ASCII "webclinic.ahnlab.com"
     if (offset === -1)
         return "Failed in Step 1 - webclinic reference missing";
 
     //Step 1.3 - Find the JZ before the RETN that points to the PUSH
     var code =
-        " 74 ??" //JZ addr2 -> PUSH OFFSET addr; ASCII 'webclinic.ahnlab.com'
+        " 74 ??" //JZ addr2 -> PUSH OFFSET addr; ASCII "webclinic.ahnlab.com"
     +   " 33 C0" //XOR EAX, EAX
     ;
 

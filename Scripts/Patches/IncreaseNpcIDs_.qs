@@ -46,8 +46,8 @@ function IncreaseNpcIDs()
         return "Failed in Step 3 - Not enough free space";
 
     //Step 3.3 - Get the starting and ending IDs for the Loop from user
-    var lowerLimit = Exe.GetUserInput("$npcLower", I_DWORD, "Number input - Increase Npc IDs", "Enter Lower Limit of Npc IDs", 10000, 10000, 20000);
-    var upperLimit = Exe.GetUserInput("$npcUpper", I_DWORD, "Number input - Increase Npc IDs", "Enter Upper Limit of Npc IDs", 11000, 10000, 20000);
+    var lowerLimit = Exe.GetUserInput('$npcLower', I_DWORD, "Number input - Increase Npc IDs", "Enter Lower Limit of Npc IDs", 10000, 10000, 20000);
+    var upperLimit = Exe.GetUserInput('$npcUpper', I_DWORD, "Number input - Increase Npc IDs", "Enter Upper Limit of Npc IDs", 11000, 10000, 20000);
 
     if (upperLimit === lowerLimit)
         return "Patch Cancelled - Lower and Upper Limits are same";

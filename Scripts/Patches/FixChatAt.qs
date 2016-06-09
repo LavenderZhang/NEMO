@@ -18,7 +18,7 @@ function FixChatAt()
     {   //VC9+ Clients
         //==============================================//
         // Note: The above will be followed by MOV AL,1 //
-        //             and POP EBP/EBX statements                         //
+        //             and POP EBP/EBX statements       //
         //==============================================//
 
         //Step 1.2 - Change 0 to 1
@@ -26,6 +26,7 @@ function FixChatAt()
     }
     else
     {   //Older clients
+
         //Step 2.1 - Find the call inside UIWindowMgr::ProcessPushButton
         code =
             " 8B CE"             //MOV ECX, ESI
@@ -62,7 +63,7 @@ function FixChatAt()
         +   " C2 04 00"           //RETN 4
         +   " 61"                 //POPAD <- addr
         +   " 68" + MakeVar(2)    //PUSH func
-        +   " C3"                 //RETN; Alternative to 'JMP func' with no relative offset calculation needed
+        +   " C3"                 //RETN; Alternative to "JMP func" with no relative offset calculation needed
         ;
         var csize = code.byteCount();
 

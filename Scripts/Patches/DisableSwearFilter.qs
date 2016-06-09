@@ -1,5 +1,5 @@
 //#########################################################################################\\
-//# Zero out 'manner.txt' to prevent any reference bad words from loading to compare with #\\
+//# Zero out "manner.txt" to prevent any reference bad words from loading to compare with #\\
 //#########################################################################################\\
 
 function DisableSwearFilter()

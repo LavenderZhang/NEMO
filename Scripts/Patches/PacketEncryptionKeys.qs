@@ -4,17 +4,17 @@
 
 function PacketFirstKeyEncryption()
 {
-    return PacketEncryptionKeys("$firstkey", 0);
+    return PacketEncryptionKeys('$firstkey', 0);
 }
 
 function PacketSecondKeyEncryption()
 {
-    return PacketEncryptionKeys("$secondkey", 1);
+    return PacketEncryptionKeys('$secondkey', 1);
 }
 
 function PacketThirdKeyEncryption()
 {
-    return PacketEncryptionKeys("$thirdkey", 2);
+    return PacketEncryptionKeys('$thirdkey', 2);
 }
 
 //#############################################################################################\\

@@ -31,7 +31,7 @@ function ResizeFont()
     var freeVirl = Exe.Real2Virl(free, DIFF);
 
     //Step 2.3 - Get the new Font height
-    var newHeight = Exe.GetUserInput("$newFontHgt", I_INT8, "Number Input", "Enter the new Font Height(1-127) - snaps to closest valid value", 10, 1);
+    var newHeight = Exe.GetUserInput('$newFontHgt', I_INT8, "Number Input", "Enter the new Font Height(1-127) - snaps to closest valid value", 10, 1);
     if (newHeight === 10)
         return "Patch Cancelled - New value is same as old";
 

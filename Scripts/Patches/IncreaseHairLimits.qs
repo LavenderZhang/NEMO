@@ -235,10 +235,10 @@ function IncreaseHairLimits() //To Do - Doram client is different need to explor
     }
 
     //Step 3.1 - Get new Hair color limit from user
-    var hCNewLimit = Exe.GetUserInput("$hairColorLimit", I_INT16, "Number Input", "Enter new hair color limit", hCLimit, hCLimit, 1000);//Sane Limit of 1000
+    var hCNewLimit = Exe.GetUserInput('$hairColorLimit', I_INT16, "Number Input", "Enter new hair color limit", hCLimit, hCLimit, 1000);//Sane Limit of 1000
 
     //Step 3.2 - Get new Hair style limit from user
-    var hSNewLimit = Exe.GetUserInput("$hairStyleLimit", I_INT16, "Number Input", "Enter new hair style limit", 0x16, 0x16, 1000);//Sane Limit of 1000
+    var hSNewLimit = Exe.GetUserInput('$hairStyleLimit', I_INT16, "Number Input", "Enter new hair style limit", 0x16, 0x16, 1000);//Sane Limit of 1000
 
     //Step 3.3 - Check if both limits are unchanged by user
     if (hCNewLimit === hCLimit && hSNewLimit === 0x16)

@@ -21,7 +21,7 @@ function IncreaseViewID()
         var oldValue = 1000;
 
     //Step 2.1 - Get the new limit from user
-    var newValue = Exe.GetUserInput("$newValue", I_INT32, "Number input", "Enter the new Max Headgear View ID", oldValue, oldValue, 32000);//32000 could prove fatal.
+    var newValue = Exe.GetUserInput('$newValue', I_INT32, "Number input", "Enter the new Max Headgear View ID", oldValue, oldValue, 32000);//32000 could prove fatal.
     if (newValue === oldValue)
         return "Patch Cancelled - New value is same as old";
 
@@ -36,7 +36,7 @@ function IncreaseViewID()
     //Step 2.3 - Replace old with new for all
     for (var i = 0; i < offsets.length; i++)
     {
-        Exe.ReplaceString(offsets[i], "$newValue");
+        Exe.ReplaceString(offsets[i], '$newValue');
     }
     return true;
 }

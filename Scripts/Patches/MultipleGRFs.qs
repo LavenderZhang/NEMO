@@ -179,7 +179,7 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
     ;
 
     //Step 4 - Get the INI file name from user
-    var iniFile = Exe.GetUserInput("$dataINI", I_STRING, "String Input", "Enter the name of the INI file", "DATA.INI", 1, 20);
+    var iniFile = Exe.GetUserInput('$dataINI', I_STRING, "String Input", "Enter the name of the INI file", "DATA.INI", 1, 20);
     if (!iniFile)
         return "Patch Cancelled";
 
@@ -230,18 +230,15 @@ function EMG_V1(grf, setECX, fnOffset, AddPak)
 function EMG_V2(grf, setECX, fnOffset, AddPak)
 {
     //Step 3.1 - Get the INI file from user to read
-    var iniFile = Exe.GetUserInput("$inpMultGRF", I_FILE, 'File Input - Enable Multiple GRF', 'Enter your INI file', APP_PATH);
-    if (!iniFile)
+    var Fp = MakeFile('$inpMultGRF', "File Input - Enable Multiple GRF", "Enter your INI file", APP_PATH);
+    if (!Fp)
         return "Patch Cancelled";
 
     //Step 3.2 - Read the GRF filenames from the INI into an array
     var temp = [];
-    var fp = new File();
-    fp.Open(iniFile, 'r');
-
-    while (!fp.IsEOF())
+    while (!Fp.IsEOF())
     {
-        var line = fp.ReadLine().trim();
+        var line = Fp.ReadLine().trim();
         var matches = line.match(/^(\d)=(.*)/);
         if (!matches)
             continue;
@@ -250,7 +247,7 @@ function EMG_V2(grf, setECX, fnOffset, AddPak)
         var value = matches[2].trim();
         temp[index] = value;
     }
-    fp.Close();
+    Fp.Close();
 
     //Step 3.4 - Account for empty file (atleast data.grf should be there)
     if (temp.length === 0)

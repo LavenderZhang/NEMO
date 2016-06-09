@@ -32,7 +32,7 @@ function IncreaseScreenshotQuality()
     var csize = code.byteCount() / 2;//Length of 1 assignment
 
     //Step 2.1 - Get new quality value from user
-    var newValue = Exe.GetUserInput("$uQuality", I_INT8, "Number Input", "Enter the new quality factor (0-100)", 50, 0, 100);
+    var newValue = Exe.GetUserInput('$uQuality', I_INT8, "Number Input", "Enter the new quality factor (0-100)", 50, 0, 100);
     if (newValue === 50)
         return "Patch Cancelled - New value is same as old";
 

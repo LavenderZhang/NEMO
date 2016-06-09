@@ -9,7 +9,7 @@ function DisableWalkToDelay()
 
 function SetWalkToDelay()
 {
-    return ChangeWalkToDelay(Exe.GetUserInput("$walkDelay", I_INT16, "Number Input", "Enter the new walk delay(0 - 1000) - snaps to closest valid value", 40, 0, 1000));
+    return ChangeWalkToDelay(Exe.GetUserInput('$walkDelay', I_INT16, "Number Input", "Enter the new walk delay(0 - 1000) - snaps to closest valid value", 40, 0, 1000));
 }
 
 //#################################################################

@@ -4,7 +4,7 @@
 
 function Disable1rag1Params()
 {
-    //Step 1.1 - Find offset of '1rag1'
+    //Step 1.1 - Find "1rag1"
     var offset = Exe.FindString("1rag1", VIRTUAL);
     if (offset === -1)
         return "Failed in Step 1 - 1rag1 not found";

@@ -62,8 +62,8 @@ function MoveCashShopIcon()
     var g_ScreenStats = Exe.GetHex(offset2 + code.byteCount() - 5, 4);
 
     //Step 2.1 - Get User Coords
-    var xCoord = Exe.GetUserInput("$cashShopX", I_INT16, "Number Input", "Enter new X coordinate:", -0xBB, -0x8000); //Dialog will auto correct maximum values
-    var yCoord = Exe.GetUserInput("$cashShopY", I_INT16, "Number Input", "Enter new Y coordinate:", 0x10, -0x8000);
+    var xCoord = Exe.GetUserInput('$cashShopX', I_INT16, "Number Input", "Enter new X coordinate:", -0xBB, -0x8000); //Dialog will auto correct maximum values
+    var yCoord = Exe.GetUserInput('$cashShopY', I_INT16, "Number Input", "Enter new Y coordinate:", 0x10, -0x8000);
 
     if (xCoord === -0xBB && yCoord === 0x10)
         return "Patch Cancelled - New coordinate is same as old";

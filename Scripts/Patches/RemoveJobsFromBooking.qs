@@ -122,12 +122,9 @@ function RemoveJobsFromBooking()
     retnHere = Exe.Real2Virl(retnHere + jmpOff);
 
     //Step 2.1 - Get the Skip List file from User
-    var inpFile = Exe.GetUserInput("$bookingList", I_FILE, "File Input - Remove Jobs From Booking", "Enter the Booking Skip List file", APP_PATH + "Inputs/bookingSkipList.txt");
-    if (!inpFile)
+    var Fp = MakeFile('$bookingList', "File Input - Remove Jobs From Booking", "Enter the Booking Skip List file", APP_PATH + "Inputs/bookingSkipList.txt");
+    if (!Fp)
         return "Patch Cancelled";
-
-    var Fp = new File();
-    Fp.Open(inpFile, 'r');
 
     //Step 2.2 - Extract all the IDs from List file to an Array
     var idSet = [];

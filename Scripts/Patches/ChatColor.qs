@@ -21,12 +21,12 @@ function ChatColorGuild()
         return "Failed in Step 1";
 
     //Step 2.1 - Get new color from user
-    var color = Exe.GetUserInput("$guildChatColor", I_COLOR, "Guild Chat", "Select the new color", 0x00B4FFB4);
+    var color = Exe.GetUserInput('$guildChatColor', I_COLOR, "Guild Chat", "Select the new color", 0x00B4FFB4);
     if (color === 0x00B4FFB4)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.2 - Replace with new color
-    Exe.ReplaceString(offset + code.byteCount() - 4, "$guildChatColor");
+    Exe.ReplaceString(offset + code.byteCount() - 4, '$guildChatColor');
 
     return true;
 }
@@ -53,14 +53,14 @@ function ChatColorGM()
         return "Failed in Step 1 - Yellow not found";
 
     //Step 2.1 - Get the new color from user
-    var color = Exe.GetUserInput("$gmChatColor", I_COLOR, "GM Chat", "Select the new color", 0x0000FFFF);
+    var color = Exe.GetUserInput('$gmChatColor', I_COLOR, "GM Chat", "Select the new color", 0x0000FFFF);
     if (color === 0x0000FFFF)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.2 - Replace all the colors with new color
-    Exe.ReplaceString(offset1 + 1, "$gmChatColor");
-    Exe.ReplaceString(offset2 + 1, "$gmChatColor");
-    Exe.ReplaceString(offset3 + 1, "$gmChatColor");
+    Exe.ReplaceString(offset1 + 1, '$gmChatColor');
+    Exe.ReplaceString(offset2 + 1, '$gmChatColor');
+    Exe.ReplaceString(offset3 + 1, '$gmChatColor');
 
     return true;
 }
@@ -87,12 +87,12 @@ function ChatColorPlayerSelf() //Pattern not checked for Pre-2010 client
         return "Failed in Step 1 - Green not found";
 
     //Step 2.1 - Get the new color from user
-    var color = Exe.GetUserInput("$yourChatColor", I_COLOR, "My Chat", "Select the new color", 0x0000FF00);
+    var color = Exe.GetUserInput('$yourChatColor', I_COLOR, "My Chat", "Select the new color", 0x0000FF00);
     if (color === 0x0000FF00)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.2 - Replace with new color
-    Exe.ReplaceString(offset + 1, "$yourChatColor");
+    Exe.ReplaceString(offset + 1, '$yourChatColor');
 
     return true;
 }
@@ -115,12 +115,12 @@ function ChatColorPlayerOther()
         return "Failed in Step 1";
 
     //Step 2.1 - Get the new color from user
-    var color = Exe.GetUserInput("$otherChatColor", I_COLOR, "Other Player Chat", "Select the new color", 0x00FFFFFF);
+    var color = Exe.GetUserInput('$otherChatColor', I_COLOR, "Other Player Chat", "Select the new color", 0x00FFFFFF);
     if (color === 0x00FFFFFF)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.1 - Replace with new color
-    Exe.ReplaceString(offset + code.byteCount() - 4, "$otherChatColor");;
+    Exe.ReplaceString(offset + code.byteCount() - 4, '$otherChatColor');;
 
     return true;
 }
@@ -148,12 +148,12 @@ function ChatColorPartySelf()
         return "Failed in Step 1";
 
     //Step 2.1 - Get the new color from user
-    var color = Exe.GetUserInput("$yourpartyChatColor", I_COLOR, "My Party Chat", "Select the new color", 0x0000C8FF);
+    var color = Exe.GetUserInput('$yourpartyChatColor', I_COLOR, "My Party Chat", "Select the new color", 0x0000C8FF);
     if (color === 0x0000C8FF)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.2 - Replace with new color
-    Exe.ReplaceString(offset + code.byteCount() - 4, "$yourpartyChatColor");;
+    Exe.ReplaceString(offset + code.byteCount() - 4, '$yourpartyChatColor');;
 
     return true;
 }
@@ -182,12 +182,12 @@ function ChatColorPartyOther()
         return "Failed in Step 1";
 
     //Step 2.1 - Get the new color from user
-    var color = Exe.GetUserInput("$otherpartyChatColor", I_COLOR, "Other Party Member Chat", "Select the new Color", 0x00C8C8FF);
+    var color = Exe.GetUserInput('$otherpartyChatColor', I_COLOR, "Other Party Member Chat", "Select the new Color", 0x00C8C8FF);
     if (color === 0x00C8C8FF)
         return "Patch Cancelled - New Color is same as old";
 
     //Step 2.2 - Replace with new color
-    Exe.ReplaceString(offset + code.byteCount() - 4, "$otherpartyChatColor");;
+    Exe.ReplaceString(offset + code.byteCount() - 4, '$otherpartyChatColor');;
 
     return true;
 }

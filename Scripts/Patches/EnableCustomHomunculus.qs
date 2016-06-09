@@ -1,6 +1,6 @@
 //##########################################################\\
 //# Change the Hardcoded table loading of Homunculus names #\\
-//# to Lua based loading using 'ReqJobName' function.      #\\
+//# to Lua based loading using "ReqJobName" function.      #\\
 //##########################################################\\
 
 MaxHomun = 7000;

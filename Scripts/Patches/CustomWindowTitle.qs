@@ -10,7 +10,7 @@ function CustomWindowTitle()
     if (strOff === -1)
         return "Failed in Step 1";
 
-    //Step 1.2 - Find offset of 'Ragnarok'
+    //Step 1.2 - Find "Ragnarok"
     var offset = Exe.FindString("Ragnarok", VIRTUAL);
     if (offset === -1)
         return "Failed in Step 1 - Original title missing";
@@ -25,7 +25,7 @@ function CustomWindowTitle()
     offset += code.byteCount() - 4;
 
     //Step 2.1 - Get the new Title from User
-    var title = Exe.GetUserInput("$customWindowTitle", I_STRING, "String Input - maximum 60 characters", "Enter the new window Title", "Ragnarok", 1, 60);//60 is the length of the URL
+    var title = Exe.GetUserInput('$customWindowTitle', I_STRING, "String Input - maximum 60 characters", "Enter the new window Title", "Ragnarok", 1, 60);//60 is the length of the URL
     if (!title)
         return "Patch Cancelled";
     
@@ -33,7 +33,7 @@ function CustomWindowTitle()
         return "Patch Cancelled - New Title is same as old";
 
     //Step 2.2 - Overwrite URL with the new Title
-    Exe.ReplaceString(strOff, "$customWindowTitle");
+    Exe.ReplaceString(strOff, '$customWindowTitle');
 
     //Step 2.3 - Replace the original reference with the URL offset.
     Exe.ReplaceInt32(offset, Exe.Real2Virl(strOff, DATA));

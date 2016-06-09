@@ -177,21 +177,15 @@ function CustomAuraLimits()
         var gAura = [" 7D", " 93", " 92"];
     }
 
-    //Step 5.1.1 - Get the input file
-    var inpFile = Exe.GetUserInput("$auraSpec", I_FILE, "File Input - Custom Aura Limits", "Enter the Aura Spec file", APP_PATH + "Inputs/auraSpec.txt");
-    if (!inpFile)
+    //Step 5.1 - Get the input file
+    var inp = MakeFile('$auraSpec', "File Input - Custom Aura Limits", "Enter the Aura Spec file", APP_PATH + "Inputs/auraSpec.txt");
+    if (!inp)
         return "Patch Cancelled";
-
-    //Step 5.1.2 - Open the File for reading
-    var inp = new File();
-    if (!inp.Open(inpFile, 'r'))
-        return "Failed to open file";
 
     //Step 5.2 - Load the ID and Level Limits to a table
     var idLvlTable = [];
     var tblSize = 0;
     var index = -1;
-
     while (!inp.IsEOF())
     {
         //Step 5.2.1 - Read a Line
@@ -206,8 +200,8 @@ function CustomAuraLimits()
             index++;
             var idSet = matches[1].split(",");
             idLvlTable[index] = {
-                "idTable":'',
-                "lvlTable":''
+                "idTable":"",
+                "lvlTable":""
             };
 
             //Step 5.2.4 - Add End of Field marker for previous Entry (-1 in Int16)

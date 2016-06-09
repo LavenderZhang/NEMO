@@ -17,7 +17,7 @@ String.prototype.replaceAt = function(index, repstr)
 
 String.prototype.repeat = function(count)
 {
-    var result = '';
+    var result = "";
     var base = this.toString();
 
     for (var i = 0; i < count; i++)
@@ -33,7 +33,7 @@ String.prototype.repeat = function(count)
 
 String.prototype.byteCount = function()
 {
-    var hlen = this.replace(/ /g, '').length; //No value checking is done atm
+    var hlen = this.replace(/ /g, "").length; //No value checking is done atm
     if ((hlen % 2) !== 0)
         hlen++;
 

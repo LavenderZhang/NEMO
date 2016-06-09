@@ -68,7 +68,7 @@ function CancelToLoginWindow()
     {
         /***** First we find all required addresses *****/
 
-        //Step 3.1 - Find the cancel case after offsets[i] using the 'canceller' pattern
+        //Step 3.1 - Find the cancel case after offsets[i] using the "canceller" pattern
         //           We are looking for the msgBox creator that shows the quit message
         offsets[i] += csize;
         offset = Exe.FindHex(canceller, offsets[i], offsets[i] + 0x80);

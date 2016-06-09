@@ -11,7 +11,7 @@ function EnableDNSSupport()
         return "Failed in Step 1 - IP not found";
 
     //Step 1.2 - Find the g_accountAddr assignment to the IP
-    var code = "C7 05 ?? ?? ?? 00" + Num2Hex(offset); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII '211.172.247.115'
+    var code = "C7 05 ?? ?? ?? 00" + Num2Hex(offset); //MOV DWORD PTR DS:[g_accountAddr], OFFSET addr; ASCII "211.172.247.115"
 
     offset = Exe.FindHex(code);
     if (offset === -1)

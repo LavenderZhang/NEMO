@@ -16,7 +16,7 @@ function RenameLicenseTxt()
         return "Failed in Step 1 - String reference missing";
 
     //Step 2.1 - Get new Filename from user
-    var txtFile = Exe.GetUserInput("$licenseTXT", I_STRING, "String Input", "Enter the name of the Txt file", "..\\licence.txt", 1, 20);
+    var txtFile = Exe.GetUserInput('$licenseTXT', I_STRING, "String Input", "Enter the name of the Txt file", "..\\licence.txt", 1, 20);
     if (!txtFile)
         return "Patch Cancelled";
 
@@ -29,7 +29,7 @@ function RenameLicenseTxt()
         return "Failed in Step 2 - Not enough free space";
 
     //Step 2.3 - Insert the new name at free space
-    Exe.InsertString(free, "$licenseTXT", txtFile.length);
+    Exe.InsertString(free, '$licenseTXT', txtFile.length);
 
     //Step 2.4 - Update the reference to point to new name
     Exe.ReplaceInt32(offset + 6, Exe.Real2Virl(free, DIFF));
