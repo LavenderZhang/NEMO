@@ -24,7 +24,8 @@ function ChangeItemInfo()
     var myfile = Exe.GetUserInput("$newItemInfo", I_STRING, "String input - maximum 28 characters including folder name/", "Enter the new ItemInfo path (should be relative to RO folder)", iiName, 1, 28);
     if (!myfile)
         return "Patch Cancelled";
-    if (myfile === iiName)
+    
+    if (myfile === iiName + '\0')
         return "Patch Cancelled - New value is same as old";
 
     //Step 2.2 - Find Free space for insertion

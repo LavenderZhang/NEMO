@@ -26,7 +26,10 @@ function CustomWindowTitle()
 
     //Step 2.1 - Get the new Title from User
     var title = Exe.GetUserInput("$customWindowTitle", I_STRING, "String Input - maximum 60 characters", "Enter the new window Title", "Ragnarok", 1, 60);//60 is the length of the URL
-    if (title.trim() === "Ragnarok\0")
+    if (!title)
+        return "Patch Cancelled";
+    
+    if (title === "Ragnarok\0")
         return "Patch Cancelled - New Title is same as old";
 
     //Step 2.2 - Overwrite URL with the new Title
