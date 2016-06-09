@@ -20,7 +20,7 @@ function RenameLicenseTxt()
     if (!txtFile)
         return "Patch Cancelled";
 
-    if (txtFile === "..\\licence.txt")
+    if (txtFile === "..\\licence.txt\0")
         return "Patch Cancelled - New Name is same as Old Name";
 
     //Step 2.2 - Find Free space for insertion
