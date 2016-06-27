@@ -43,3 +43,11 @@ LUA =
     "Error"     : false
 };
 GetLuaData();//function directly works on LUA hash and hence doesnt need to be passed as argument
+
+SKL = //Used for Enable*Skills patches
+{
+    "Offset"    : -1,
+    "Prefix"    : "",
+    "PatchID"   : false,
+    "Error"     : false
+}

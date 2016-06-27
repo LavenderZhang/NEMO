@@ -44,6 +44,8 @@ RegisterGroup(15, "Resurrection", true);
 
 RegisterGroup(16, "WalkToDelay", true);
 
+RegisterGroup(17, "EnableSkills", false);
+
 //################################################################################################\\
 //# Patch registrations                                                                          #\\
 //################################################################################################\\
@@ -347,7 +349,7 @@ RegisterPatch(219, "ShowResurrectionButton", "Always Show Resurrection Button", 
 
 RegisterPatch(220, "DisableMapInterface", "Disable Map Interface", "Custom", 0, "Neo", "Disable the World View (Full Map) Interface", false);
 
-RegisterPatch(221, "RemoveJobsFromBooking", "Remove Jobs from Booking", "Custom", 0, "Neo", "Removes user specified set of Job Names from Party Booking Window.", false);
+RegisterPatch(221, "RemoveJobsFromBooking", "Remove Jobs from Booking", "Custom", 0, "Neo", "Removes user specified set of Job Names from Party Booking Window", false);
 
 RegisterPatch(222, "ShowReplayButton", "Show Replay Button", "Custom", 0, "Neo", "Makes the client show Replay button on Service Select screen that opens the Replay File List window", false);
 
@@ -355,10 +357,17 @@ RegisterPatch(223, "MoveItemCountUpwards", "Move Item Count Upwards [Experimenta
 /*
 RegisterPatch(224, "IncreaseNpcIDs", "Increase NPC Ids [Experimental]", "Custom", 0, "Neo", "Increase the Loaded NPC IDs to include 10K+ range IDs. Limits are configurable", false);
 */
-RegisterPatch(225, "ShowRegisterButton", "Show Register Button", "Custom", 0, "Neo", "Makes the client always show register button on Login Window for all Langtypes. Clicking the button will open <registrationweb> from clientinfo and closes the client.", false);
+RegisterPatch(225, "ShowRegisterButton", "Show Register Button", "Custom", 0, "Neo", "Makes the client always show register button on Login Window for all Langtypes. Clicking the button will open <registrationweb> from clientinfo and closes the client", false);
 
-RegisterPatch(226, "DisableWalkToDelay", "Disable Walk To Delay", "Fix", 16, "MegaByte", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
+RegisterPatch(226, "DisableWalkToDelay", "Disable Walk To Delay", "Custom", 16, "MegaByte", "Will have a quicker response to walking clicks. But client may likely send more/duplicated packets", false);
 
-RegisterPatch(227, "SetWalkToDelay", "Change Walk To Delay", "Fix", 16, "MegaByte", "Can have a quicker response to walking clicks. But client may likely send more/duplicated packets.", false);
+RegisterPatch(227, "SetWalkToDelay", "Change Walk To Delay", "Custom", 16, "MegaByte", "Can have a quicker response to walking clicks. But client may likely send more/duplicated packets", false);
 
-RegisterPatch(228, "EnableEmblemForBG", "Enable Emblem hover for BG", "UI", 0, "Neo", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
+RegisterPatch(228, "EnableEmblemForBG", "Enable Emblem hover for BG", "Custom", 0, "Neo", "Makes the client show the Emblem on top of the character for Battleground mode as well along with GvG", false);
+
+RegisterPatch(229, "EnablePlayerSkills", "Enable Custom Player Skills [Experimental]", "Custom", 17, "Neo", "Enables the use of custom skills castable on players (using Lua Files)", false);
+/*
+RegisterPatch(230, "EnableHomunSkills", "Enable Custom Homunculus Skills [Experimental]", "Custom", 17, "Neo", "Enables the use of custom skills for Homunculus (using Lua Files)", false);
+
+RegisterPatch(231, "EnableMerceSkills", "Enable Custom Mercenary Skills [Experimental]", "Custom", 17, "Neo", "Enables the use of custom skills for Mercenaries (using Lua Files)", false);
+*/

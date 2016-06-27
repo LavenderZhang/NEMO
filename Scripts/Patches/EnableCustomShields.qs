@@ -149,7 +149,7 @@ function EnableCustomShields() //Pre-VC9 Client support not completed
     funcName = "GetShieldID\x00";
     free = Exe.FindSpace(funcName.length + 0x5 + 0x3D + 0x4);
     if (free === -1)
-        return "Failed in Part 4 - Not enough free space";
+        return "Failed in Step 4 - Not enough free space";
 
     //Step 4.2 - Construct code
     code =

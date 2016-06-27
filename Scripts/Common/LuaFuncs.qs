@@ -313,5 +313,5 @@ function AddLuaLoaders(referFile, nameList, insertHere)
     else
         Exe.ReplaceHex(insertHere, code + strCode);
 
-    return true;
+    return insertHere;
 }

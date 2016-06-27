@@ -682,3 +682,39 @@ function ExtractTillEnd(offset, refReg, refOff, tgtReg, endCheck, skipFunc)
     //Step 4 - Return the Ending offset and the Extracted code
     return {"EndOff": offset, "Code": extract};
 }
+
+//#############################################################\\
+//#                                                           #\\
+//#############################################################\\
+
+function LoadSkillTypeLua(id, offset)
+{
+    if (SKL.Prefix === "")
+    {
+        SKL.Prefix = "Lua Files\\SkillInfo";
+        if (Exe.GetDate() >= 20100817)
+            SKL.Prefix += "z";
+    }
+    
+    if (!SKL.PatchID)
+    {
+        SKL.Offset = AddLuaLoaders(
+            SKL.Prefix + "\\SkillInfo_F",
+            [
+                SKL.Prefix + "\\SkillType",
+                SKL.Prefix + "\\SkillType_F"
+            ],
+            offset
+        );
+        if (typeof(SKL.Offset) === "string")//Error was returned
+        {
+            SKL.Error = SKL.Offset;
+            SKL.Offset = -1;
+        }
+        else
+        {
+            SKL.Error = false;
+            SKL.PatchID = id;
+        }
+    }
+}

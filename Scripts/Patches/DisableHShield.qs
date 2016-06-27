@@ -122,12 +122,13 @@ function DisableHShield()
     ///======================================///
 
     //Step 4.1 - Find "aossdk.dll"
-    var aOffset = Exe.FindString("aossdk.dll", VIRTUAL, false);
+    //var aOffset = Exe.FindString("aossdk.dll", VIRTUAL, false);
+    var aOffset = Exe.FindHex(Ascii2Hex("aossdk.dll\0"), Exe.GetRealOffset(DATA), Exe.GetSize());
     if (aOffset === -1)
         return "Failed in Step 4";
 
     //Step 4.2 - Construct the Image Descriptor Pattern (Relative Virl Address prefixed by 8 zeros)
-    aOffset = " 00".repeat(8) + Num2Hex(aOffset - Exe.GetImgBase());
+    aOffset = " 00".repeat(8) + Num2Hex(Exe.Real2Virl(aOffset) - Exe.GetImgBase());
 
     //Step 4.3 - Check for Use Custom DLL patch - needed since it modifies the import table location
     var hasCustomDLL = (GetActivePatches().indexOf(211) !== -1);
@@ -194,7 +195,7 @@ function DisableHShield()
 ///============================///
 function DisableHShield_()
 {
-    return (Exe.FindString("aossdk.dll", REAL) !== -1);
+    return (Exe.FindHex(Ascii2Hex("aossdk.dll\0"), Exe.GetRealOffset(DATA), Exe.GetSize()) !== -1);
 }
 
 //##############################################################\\
