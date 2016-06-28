@@ -683,9 +683,10 @@ function ExtractTillEnd(offset, refReg, refOff, tgtReg, endCheck, skipFunc)
     return {"EndOff": offset, "Code": extract};
 }
 
-//#############################################################\\
-//#                                                           #\\
-//#############################################################\\
+//################################################################################\\
+//# Helper function which injects skill lua file loading and also fills SKL hash #\\
+//# Used by Enable * Skills patches.                                             #\\
+//################################################################################\\
 
 function LoadSkillTypeLua(id, offset)
 {
